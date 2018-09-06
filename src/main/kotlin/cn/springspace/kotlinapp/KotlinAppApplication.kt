@@ -26,6 +26,7 @@ fun main(args: Array<String>) {
     runApplication<KotlinAppApplication>(*args) {
         addInitializers(
                 beans {
+
                     bean {
                         val bookRepository = ref<BookRepository>()
                         val interval = Flux.interval(Duration.ofMillis(100))
