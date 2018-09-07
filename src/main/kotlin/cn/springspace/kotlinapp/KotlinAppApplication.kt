@@ -19,6 +19,7 @@ import java.util.stream.Stream
 class KotlinAppApplication
 
 interface BookRepository : ReactiveMongoRepository<Book, String>
+
 @Document
 data class Book(val name: String, val author: String, val publish: Date)
 
@@ -32,9 +33,8 @@ fun main(args: Array<String>) {
                         val interval = Flux.interval(Duration.ofMillis(100))
                         router {
                             GET("/books") {
-                                ServerResponse.ok()
-                                        .contentType(MediaType.TEXT_EVENT_STREAM)
-                                        .body(Flux.zip(interval, bookRepository.findAll()).map { it.t2 })
+                                ServerResponse.ok().contentType(MediaType.TEXT_EVENT_STREAM)
+                                        .body(Flux.zip(interval, bookRepository.findAll()).map { entry -> entry.t2 })
                             }
                         }
                     }
